@@ -4,7 +4,7 @@ __Can you define an event, using solely the randomness of tosses of a fair coin,
 
 I thought of this question a few months ago, and after a few days of the question being in the back of my mind, I came up with a solution. This code tries to generalise that solution for any probability that can be expressed as a fraction, `n/d`, where `d <= 1024`. This condition is merely to keep computations tractable. Parallelisation of the code could indeed unlock efficiency gains, but this is an early prototype.
 
-Run by using installing requirements with
+Run by installing requirements with
 ```bash
 pip install -r requirements.txt
 ```
