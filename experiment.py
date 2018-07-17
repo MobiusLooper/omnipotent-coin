@@ -10,7 +10,6 @@ class Experiment:
         assert (probability.denominator >= probability.numerator), "Denominator must be at least as large as the numerator"
         assert (probability.denominator <= 2**10), f"Denominator must be <= {2**10} so calculations are tractable"
         self._probability = probability
-        self._sequence = ''
         self._setup_subsequences()
 
     def _setup_subsequences(self):
@@ -28,8 +27,7 @@ class Experiment:
         return subsequence_length
 
     def _generate_all_subsequences(self):
-        subsequences_list = list(product(*[['H', 'T']] * self._subsequence_length))
-        self._subsequences = [''.join(subsequence) for subsequence in subsequences_list]
+        self._subsequences = list(product(*[[1, 0]] * self._subsequence_length))
 
     def _generate_continuation_subsequences(self):
         return self._subsequences[self._probability.denominator:]
@@ -42,16 +40,16 @@ class Experiment:
         return self._subsequences[:num_success_subsequences]
 
     def _run_episode(self):
-        self._generate_new_sequence()
-        while self._sequence[-self._subsequence_length:] in self._continuation_subsequences:
-            self._generate_new_sequence()
-        success = (self._sequence[-self._subsequence_length:] in (self._success_subsequences))
+        self._sequence = []
+        self._generate_new_subsequence()
+        while tuple(self._sequence[-self._subsequence_length:]) in self._continuation_subsequences:
+            self._generate_new_subsequence()
+        success = (tuple(self._sequence[-self._subsequence_length:]) in self._success_subsequences)
         return success
 
-    def _generate_new_sequence(self):
-        toss_outcomes = np.random.choice(['H', 'T'], size=self._subsequence_length)
-        new_subsequence = ''.join(toss_outcomes)
-        self._sequence = self._sequence + new_subsequence
+    def _generate_new_subsequence(self):
+        new_subsequence = np.random.choice([1, 0], size=self._subsequence_length)
+        self._sequence.extend(new_subsequence)
 
     def run_experiment(self, num_episodes=10000):
         assert num_episodes > 0 and isinstance(num_episodes, int), 'You must enter a positive integer for num_episodes'
