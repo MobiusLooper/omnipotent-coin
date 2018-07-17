@@ -8,6 +8,7 @@ Run by using installing requirements with
 ```bash
 pip install -r requirements.txt
 ```
+then call the programme to run with
 ```bash
 python run.py -n 1 -d 3 -e 100000
 ```
