@@ -4,11 +4,20 @@ from tqdm import tqdm
 from itertools import product
 from fractions import Fraction
 
+
 class Experiment:
+    """
+    This class implements an experiment and defines an event, where the probability of that event is inputted by the
+    user. However, the only source of randomness used is the randomness of the outcome of tosses of a fair coin.
+
+    The class is instantiated with a probability. There are restrictions on how large the denominator can be, in order
+    to keep computations tractable and not be too memory intensive.
+    """
+
     def __init__(self, probability: Fraction):
         assert probability.numerator > 0, "Numerator must be positive integer"
         assert (probability.denominator >= probability.numerator), "Denominator must be at least as large as the numerator"
-        assert (probability.denominator <= 2**10), f"Denominator must be <= {2**10} so calculations are tractable"
+        assert (probability.denominator <= 2 ** 15), f"Denominator must be <= {2**15} so calculations are tractable"
         self._probability = probability
         self._setup_subsequences()
 
@@ -20,7 +29,7 @@ class Experiment:
         self._success_subsequences = self._generate_success_subsequences()
 
     def _calculate_subsequence_length(self):
-        powers_of_two = [2**n for n in range(100)]
+        powers_of_two = [2 ** n for n in range(15)]
         subsequence_length = 0
         while self._probability.denominator > powers_of_two[subsequence_length]:
             subsequence_length += 1
