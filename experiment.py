@@ -25,7 +25,6 @@ class Experiment:
         self._subsequence_length = self._calculate_subsequence_length()
         self._generate_all_subsequences()
         self._continuation_subsequences = self._generate_continuation_subsequences()
-        self._termination_subsequences = self._generate_termination_subsequences()
         self._success_subsequences = self._generate_success_subsequences()
 
     def _calculate_subsequence_length(self):
@@ -41,14 +40,10 @@ class Experiment:
     def _generate_continuation_subsequences(self):
         return self._subsequences[self._probability.denominator:]
 
-    def _generate_termination_subsequences(self):
-        return self._subsequences[:self._probability.denominator]
-
     def _generate_success_subsequences(self):
-        num_success_subsequences = self._probability.numerator
-        return self._subsequences[:num_success_subsequences]
+        return self._subsequences[:self._probability.numerator]
 
-    def _run_episode(self):
+    def run_episode(self):
         self._sequence = []
         self._generate_new_subsequence()
         while tuple(self._sequence[-self._subsequence_length:]) in self._continuation_subsequences:
@@ -64,6 +59,6 @@ class Experiment:
         assert num_episodes > 0 and isinstance(num_episodes, int), 'You must enter a positive integer for num_episodes'
         results_sequence = []
         for _ in tqdm(range(num_episodes)):
-            results_sequence.append(self._run_episode())
+            results_sequence.append(self.run_episode())
         num_successes = sum(results_sequence)
         return num_successes / num_episodes
