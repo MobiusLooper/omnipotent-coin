@@ -18,3 +18,5 @@ After executing, you should see a `tqdm` progress bar showing progress of episod
 ```
 Result: 0.33535 from 100,000 episodes
 ```
+
+See my series of [Medium articles](https://medium.com/@joshcooper_70843) for an enticing journey down the rabbit hole of curiosity.
